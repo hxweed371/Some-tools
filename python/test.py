@@ -1,50 +1,19 @@
 import os
-import shutil
 
-folder_path = r"D:\\QuangLinh\\Hoc\\orderby"
+def print_all_pdf_files_v2(root_path, folder_name_list, move_files_pdf):
+    for item in os.listdir(root_path):
+        item_path = os.path.join(root_path, item)
+        if os.path.isdir(item_path):
+            print_all_pdf_files_v2(item_path, folder_name_list, move_files_pdf)
+        elif item.lower().endswith(".pdf"):
+            file_size = os.path.getsize(item_path)
+            move_files_pdf.append((item_path, file_size))
+            sql_insert_statement = f"INSERT INTO YourTableName (FileName, FileSize) VALUES ( '{item_path}', {file_size});"
+            print(sql_insert_statement)  # Print the path and size of the PDF file
 
-folder_root = "\\File"
-folder_root_name = ["HSBB","MVNAH","TCML","HSTB","DBTD","HSLS","CDHH","NCC","TKN"]
-folder_root_level2_name = ["BQ","MV","BM","VX","TP","QBI","DV","HSP","QBA","XM","YM"]
-
-folder_root_orderby = "\\CSDL_SOHOA_TBHG"
-renamed_folders = []
+# Example usage
+root_path = r"D:\QuangLinha\Learn\python\OrderFile\file"
+folder_name_list = []  # Assuming you don't need to use folder_name_list
 move_files_pdf = []
 
-folder_name_list = [
-    ('BacQuang', 'BQ'),
-    ('QuanBa', 'QBA'),
-    ('TP HaGiang', 'TP'),
-    ('ViXuyen', 'VX'),
-    ('YenMinh', 'YM'),
-    ('BacMe', 'BM'),
-    ('QuangBinh', 'QBI'),
-    ('HoangSuPhi', 'HSP'),
-    ('XinMan', 'XM'),
-    ('DongVan', 'DV'),
-    ('MeoVac', 'MV'),
-]
-target_folders = [
-     "QuangLinh","Hoc","orderby","CSDL_SOHOA_TBHG",
-     "NCC","TKN",
-     "BQ","MV","BM","VX","TP","QBI","DV","HSP","QBA","XM","YM"
-]
-output_paths = []
-def main():
-    
-    add_folder_name(folder_path, folder_root, folder_root_name, folder_root_level2_name)
-    print("OK")
-
-def add_folder_name(folder_path, folder_root, folder_root_name, folder_root_level2_name):
-    root = folder_path + folder_root
-    if not os.path.exists(root):
-        os.mkdir(root)
-    print(root)
-    print(folder_path)
-    print(folder_root_name)
-    print(folder_root_level2_name)
-    
-
-             
-if __name__ == "__main__":
-    main()
+print_all_pdf_files_v2(root_path, folder_name_list, move_files_pdf)
